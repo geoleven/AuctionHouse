@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"  />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css"></link>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Welcome to Auction House</title>
+    </h:head>
+    
+    <f:event listener="#{login.redirectToMain()}" type="preRenderView" />
+    
+    <h:body>
+        <div class ="pure-g">
+            <div class="pure-u-1-1">
+                <div class ="loginBox pure-u-1-4">
+
+                    <h1> Welcome to AuctionHouse</h1>
+                    <hr/>
+                    <h:form class="pure-form pure-form-aligned" id="loginform">
+                        <fieldset>
+                            <div class="pure-control-group">
+                                <label for="name">Username</label>
+                                <h:inputText value="#{login.username}" />
+                            </div>
+
+                            <div class="pure-control-group">
+                                <label for="password">Password</label>
+                                <h:inputSecret value="#{login.password}" />
+                                
+                            </div>
+
+                            <div class="pure-controls">
+
+                                <h:commandButton action="#{login.validate()}" value="Sign In" class="login pure-button pure-button-primary"/>
+                                <h:commandButton action="register" value="Sign Up" class="register pure-button " />
+                                
+                            </div>
+                            <hr/>
+                                <h:commandLink action="main" value="Continue as Guest" />
+                                
+                        </fieldset>
+                    </h:form>
+                    <h:message class="error" for="loginform" />
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+

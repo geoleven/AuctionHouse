@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"  />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css"></link>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition>
+
+            <div class="topbar pure-u-1-1">
+                <div class="pure-u-3-5 topbar-wrapper">
+                    <ui:fragment rendered="#{login.isLoggedIn()}">
+                        <h:form>
+                            <div class="pure-menu pure-menu-horizontal">
+                                <ul class="pure-menu-list">
+                                    <li class="pure-menu-item pure-menu-selected"><a href="#" class="pure-menu-link">#{login.username}</a></li>
+                                    <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                                        <a href="#" id="menuLink1" class="pure-menu-link">Settings</a>
+                                        <ul class="pure-menu-children">
+                                            <li class="pure-menu-item"><h:commandLink action="main" value="Browse Auctions" class="pure-menu-link"></h:commandLink></li>
+                                            <li class="pure-menu-item"><h:commandLink action="auctionCreate" value="Create Auction" class="pure-menu-link"></h:commandLink></li>
+                                            <li class="pure-menu-item"><h:commandLink action="#{userpage.loadPage()}" value="Your Info" class="pure-menu-link"></h:commandLink></li>
+                                            <li class="pure-menu-item"><h:commandLink action="#{message.loadMessages()}" value="#{message.displayMenu()}" class="pure-menu-link"></h:commandLink></li>
+                                            <li class="pure-menu-item"><h:commandLink action="#{login.logout()}" value="Logout" class="pure-menu-link"></h:commandLink></li>
+                                            <ui:fragment rendered="#{login.isAdmin()}" >
+                                                <li class="pure-menu-item"><h:commandLink action="#{admin.loadAdminPage()}" value="Admin Page" class="pure-menu-link"></h:commandLink></li>
+                                            </ui:fragment>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </h:form>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{!login.isLoggedIn()}">
+                        <div class="pure-menu pure-menu-horizontal">
+                            <h:form>
+                                
+                                <h:commandButton action="welcome" value="Sign In" class="login pure-button pure-button-primary"/>
+                                <h:commandButton action="register" value="Sign Up" class="register pure-button " />
+                                
+                            </h:form>
+                        </div>
+                    </ui:fragment>
+
+                </div>
+            </div>     
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

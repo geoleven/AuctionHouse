@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"  />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css"></link>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Admin</title>
+    </h:head>
+    
+    <h:body>
+        <div class="pure-g">            
+            
+            <ui:insert name="header">
+            <ui:include src="./templates/header.xhtml"></ui:include>
+            </ui:insert>
+            
+            
+            <div class="container pure-u-3-5">
+                <h:form>
+                    <p>
+                        <h:commandLink value="Users Not Accepted" action="#{admin.getUsersNotAccepted()}" />
+                        - 
+                        <h:commandLink value="All Users" action="#{admin.getAllUsers()}" /> 
+                        |
+                        <h:commandLink value="Import Export Xml" action="importxml" />
+                    </p>
+                </h:form>
+                <hr/> 
+                <ui:repeat value="#{admin.users}" var="user">
+                    <h:form>
+                        <h2>Username : #{user.username}</h2>
+                        <p>Password : #{user.password}</p>
+                        <p>Accepted : #{user.isAccepted()}</p>
+                        <h:commandLink action="#{userpage.loadPage(user.id)}" value="go to User Page" />
+                    </h:form>
+                    <ui:fragment rendered="#{!user.isAccepted()}" >
+                        <h:form>
+                            <h:commandButton action="#{admin.activateUser(user.getId())}" value="Activate Acount" />
+                        </h:form>
+                    </ui:fragment>
+                    <hr/>
+                </ui:repeat>
+                <hr/>
+                <h:form>
+                    <p>
+                        <h:commandLink value=" Prev Page" action="#{admin.prevPage()}"/>
+                        #{admin.page}
+                        <h:commandLink value="Next Page " action="#{admin.nextPage()}"/>
+                    </p>
+                </h:form>
+                <hr/>
+            </div>
+        </div>
+    </h:body>
+</html>

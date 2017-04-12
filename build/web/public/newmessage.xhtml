@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"  />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css"></link>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <h:outputStylesheet library="css" name="flipclock.css" />
+        
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        
+        <h:outputScript library="js" name="flipclock.min.js" />
+        
+        <title>New Message</title>
+    </h:head>
+    
+    <h:body>
+        <div class="pure-g">            
+            
+            <ui:insert name="header">
+            <ui:include src="./templates/header.xhtml"></ui:include>
+            </ui:insert>
+            
+            <div class="container pure-u-2-5">                
+                <div class="pure-g">
+                    <div class="pure-u-1-1">  
+                        <h1 align="center"> New Message </h1>
+                        <hr/>
+                        <div class="pure-g">
+                            <div class="pure-u-2-3" >                               
+                                <h:form class="pure-form pure-form-stacked">
+                                    <label from="to">To:</label>
+                                    <h:inputText value="#{message.sendTo}"/>
+                                    <label from="msg">Message:</label>
+                                    <h:inputTextarea value="#{message.sendMsg}" class="pure-input-2-3"/>
+                                    <hr/>
+                                    <h:commandButton action="#{message.sendMessage()}" value="Send" class="pure-button pure-button-primary"/>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>

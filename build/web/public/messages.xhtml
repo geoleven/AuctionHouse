@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"  />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css"></link>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <h:outputStylesheet library="css" name="flipclock.css" />
+        
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        
+        <h:outputScript library="js" name="flipclock.min.js" />
+        
+        <title>Messages</title>
+    </h:head>
+    
+    <h:body>
+        <div class="pure-g">            
+            
+            <ui:insert name="header">
+            <ui:include src="./templates/header.xhtml"></ui:include>
+            </ui:insert>
+            
+            <div class="container pure-u-2-5">                
+                <div class="pure-g">
+                    <div class="pure-u-1-1">  
+                        <h1 align="center"> Messages </h1>
+                        <hr/>
+                        <h:form class="pure-form">
+                            <h:commandButton action="newmessage" value="Send New" class="pure-button pure-button-primary" />
+                        </h:form>
+                        <hr/>
+                        <div class="pure-g">
+                            <div class="pure-u-1-3" >
+                                <div class="let-some-space">
+                                    <div class="pure-g">
+                                        
+                                        <ui:repeat value="#{message.contactList}" var="contact">
+                                            <h:form>
+                                            <h:commandLink action="#{message.loadMessages(contact.id)}">
+                                            <div class="let-some-space">
+                                                <div class="image pure-u-1-3">
+                                                    <div class="let-some-space">
+                                                        <h:graphicImage library="images" name="default-user-image.png" />
+                                                    </div>
+                                                </div>
+                                                <div class="pure-u-2-3">
+                                                    <div class="let-some-space">
+                                                        <p align="center"> #{contact.username} </p>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+                                            </div>
+                                            </h:commandLink>
+                                            </h:form>
+                                        </ui:repeat>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pure-u-2-3">
+                                <div class="let-some-space">
+                                    
+                                    <ui:repeat value="#{message.log}" var="logmsg">
+                                        <p>#{logmsg}</p>
+                                    </ui:repeat>
+                                   
+                                    <hr/>
+                                    <h:form class="pure-form">
+                                        <h:inputTextarea value="#{message.sendMsg}" class="pure-input-2-3"/>
+                                        <h:commandButton action="#{message.reply()}" value="Reply" class="pure-button pure-button-primary"/>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>

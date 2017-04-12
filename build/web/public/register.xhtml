@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"  />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css"></link>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        
+        <script src="http://maps.googleapis.com/maps/api/js"></script>
+        <script>
+            function initialize() {
+                
+                var myLatLng = new google.maps.LatLng(37.974,23.718);
+                
+                var mapProp = {
+                    center:myLatLng,
+                    zoom:5,
+                    mapTypeId:google.maps.MapTypeId.ROADMAP
+                };
+                var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+                
+                marker = new google.maps.Marker(
+                {
+                     map:map,
+                     draggable:true,
+                     animation: google.maps.Animation.DROP,
+                     position: myLatLng
+                });
+                
+                google.maps.event.addListener(marker, 'click', function (event) {
+                    document.getElementById("latbox").value = event.latLng.lat();
+                    document.getElementById("lngbox").value = event.latLng.lng();
+                });
+                
+                google.maps.event.addListener(marker, 'dragend', function (event) {
+                    document.getElementById("latbox").value = this.getPosition().lat();
+                    document.getElementById("lngbox").value = this.getPosition().lng();
+                });
+                
+            }
+            google.maps.event.addDomListener(window, 'load', initialize);
+            
+        </script>
+        
+        <f:event listener="#{login.redirectToMain()}" type="preRenderView" />
+        
+        <title>Register</title>
+    </h:head>
+    <h:body>
+        <div class ="pure-g">
+            <div class="pure-u-1-1">
+                <div class ="loginBox pure-u-1-4">
+
+                    <h1> Sign Up :</h1>
+                    <p>fields in (*) are optional</p>
+                    <hr/>
+                    <h:form class="pure-form pure-form-aligned" id="registerform">
+                        <fieldset>
+                            <div class="pure-control-group">
+                                <label for="name">Username</label>
+                                <h:inputText value="#{register.username}" id="username"/>
+                            </div>
+                            <h:message  class="error" for="username" />
+
+                            <div class="pure-control-group">
+                                <label for="password">Password</label>
+                                <h:inputSecret value="#{register.password}" id="password"/>
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="repPassWord">Repeat Password</label>
+                                <h:inputSecret value="#{register.repPassword}" />
+                            </div>
+                            <h:message class="error" for="password" />
+                            
+                            <hr/>
+                            
+                            <div class="pure-control-group">
+                                <label for="firstName">First Name</label>
+                                <h:inputText value="#{register.firstName}" id="firstname"/>
+                            </div>
+                            <h:message  class="error" for="firstname" />
+                            
+                            <div class="pure-control-group">
+                                <label for="lastName">Last Name</label>
+                                <h:inputText value="#{register.lastName}" id="lastname"/>
+                            </div>
+                            <h:message  class="error" for="lastname" />
+                            
+                            <div class="pure-control-group">
+                                <label for="email">Email</label>
+                                <h:inputText value="#{register.email}" id="email"/>
+                            </div>
+                            <h:message  class="error" for="email" />
+                            
+                            <div class="pure-control-group">
+                                <label for="phone">Phone (*)</label>
+                                <h:inputText value="#{register.phone}" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="afm">A.F.M. (*)</label>
+                                <h:inputText value="#{register.afm}" />
+                            </div>
+                            
+                            <hr/>
+                            
+                            <div class="pure-control-group">
+                                <label for="phone">Location </label>
+                                <h:inputText value="#{register.location.name}" id="locationname"/>
+                            </div>
+                            <h:message class="error" for="locationname" />
+                            
+                            <div class="pure-control-group">
+                                <label for="phone">Country</label>
+                                <h:inputText value="#{register.location.country}" id="locationcountry"/>
+                            </div>
+                            <h:message class="error" for="locationcountry" />
+                            
+                            <p>Move the Marker to your specific location (*)</p>
+                            <div id="googleMap" style="width:600px;height:400px;"></div>
+                            
+                            <div id="latlong">
+                                <input type="hidden" size="20" id="latbox" name="lat" />
+                                <input type="hidden" size="20" id="lngbox" name="lng" />
+                            </div>
+                            
+                            <hr/>
+
+                            <div class="pure-controls">
+                                <h:commandButton action="#{register.tryRegister()}" value="Sign Up" class="login pure-button pure-button-primary"/>
+                            </div>
+                            
+                        </fieldset>
+                    </h:form>
+                    <h:message for="registerform" />
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+

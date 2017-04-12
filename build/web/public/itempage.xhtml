@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"  />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css"></link>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <h:outputStylesheet library="css" name="flipclock.css" />
+        
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        
+        <h:outputScript library="js" name="flipclock.min.js" />
+        
+        <script src="http://maps.googleapis.com/maps/api/js"></script>
+        <script>
+            function initialize() {
+
+                var myLatLng = new google.maps.LatLng(#{itempage.item.getLocation().latitude},#{itempage.item.getLocation().longitude});
+
+                var mapProp = {
+                    center:myLatLng,
+                    zoom:5,
+                    mapTypeId:google.maps.MapTypeId.ROADMAP
+                };
+                var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    title: '#{itempage.item.name}'
+                  });
+
+            }
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>    
+        
+        <title>#{itempage.item.name}</title>
+    </h:head>
+    
+    <h:body>
+        <div class="pure-g">            
+            
+            <ui:insert name="header">
+            <ui:include src="./templates/header.xhtml"></ui:include>
+            </ui:insert>
+            
+            <div class="container pure-u-4-5">                
+                <div class="itembox pure-g">
+                    <div class="pure-u-1-1">  
+                        <h:form>
+                            <h2 align="center">#{itempage.item.name}</h2>
+                            <p align="center"><h:commandLink action="#{userpage.loadPage(itempage.item.seller.id)}" value="by , #{itempage.item.seller.username}" /></p>
+                        </h:form>
+                        
+                        
+                            <div class="image pure-u-1-4"><h:graphicImage library="images" name="default.jpg" /></div>
+                        
+                        <ui:fragment rendered="#{itempage.item.isActive()}">
+                            <div class=" details pure-u-1-2">
+                                 <h:form>
+                                <h2>Time Remaining :</h2>
+                                <div class="clock" align="center" ></div>
+
+                                <script type="text/javascript">
+                                        var clock = $('.clock').FlipClock( #{itempage.item.secondsTilEnds()} , {
+                                                clockFace: 'DailyCounter',
+                                                countdown: true,
+                                                showSeconds: true
+                                        });
+                                </script>
+                                </h:form>
+                           </div>
+
+                            <div class="price pure-u-1-5">
+                                <h:form>
+                                    <ui:fragment rendered="#{itempage.item.hasBids()}">
+                                        <p> Best Bids : </p>
+                                        <h:outputText value="#{itempage.item.highestBid()}" >
+                                            <f:convertNumber pattern="$0.00" />
+                                        </h:outputText>
+                                    </ui:fragment>
+                                </h:form>
+                                <h:form>
+                                    <ui:fragment rendered="#{!itempage.item.hasBids()}">
+                                        <p>Starting Bidding Price (No Bids yet) : </p>
+                                        <h:outputText value="#{itempage.item.firstBid}" >
+                                            <f:convertNumber pattern="$0.00" />
+                                        </h:outputText>
+                                    </ui:fragment>
+                                </h:form>
+                                <hr/>
+                                <h:form class="pure-form">
+                                    <h:inputText class="pure-input-2-3"  value="#{itempage.myBid}" />
+                                    <h:commandButton action="#{itempage.placeBid()}" value="Bid!" class="pure-button
+                                                     button-error" />
+                                </h:form>
+                                <hr/>
+                                <h:form  class="pure-form">
+                                    <ui:fragment rendered="#{itempage.item.hasBuyPrice()}">
+                                        <p>Buy Price :
+                                        <h:outputText value="#{itempage.item.buyPrice}">
+                                            <f:convertNumber pattern="$0.00" />
+                                        </h:outputText></p>
+                                        <h:commandButton action="#{itempage.buyNow()}" value="Buy Now!" class="pure-button
+                                                     button-error" />
+                                    </ui:fragment>
+                                </h:form>
+                            </div>
+                        </ui:fragment>
+                            
+                        <ui:fragment rendered="#{!itempage.item.isActive()}">
+                            <div class=" details pure-u-1-2">
+                                 <h:form>
+                                    <h2 align="center"> Ended at #{itempage.item.ends}</h2>
+                                    <p>Winner :</p>    
+                                    <p> #{itempage.item.getWinner()} </p>
+                                     <ui:fragment rendered="#{itempage.item.hasBids()}">
+                                        <p> Best Bid : </p>
+                                        <h:outputText value="#{itempage.item.highestBid()}" >
+                                            <f:convertNumber pattern="$0.00" />
+                                        </h:outputText>
+                                    </ui:fragment>
+                                     <ui:fragment rendered="#{!itempage.item.hasBids()}">
+                                        <p>Starting Price : </p>
+                                        <h:outputText value="#{itempage.item.firstBid}" >
+                                            <f:convertNumber pattern="$0.00" />
+                                        </h:outputText>
+                                    </ui:fragment>
+                                </h:form>
+                           </div>
+                        </ui:fragment>
+                        <hr/>
+                        
+                        <ui:fragment rendered="#{itempage.displayMap()}">
+                            <div class="let-some-space">
+                                <div id="googleMap" style="width:1400px;height:250px;"></div>
+                            </div> 
+                        </ui:fragment>
+                        <ui:fragment rendered="#{!itempage.displayMap()}">
+                            <h2>Location :</h2>
+                            <p>#{itempage.item.getLocation().getName()}</p>
+                            <hr/>                       
+                            <h2>Country :</h2>
+                            <p>#{itempage.item.getLocation().getCountry()}</p>                      
+                        </ui:fragment>
+                        <hr/>
+                        <h2>Categories :</h2>
+                        <p>#{itempage.item.getCategories()}</p>
+                        <hr/>                       
+                        <h2>Description :</h2>
+                        <p>#{itempage.item.description}</p>
+                        <hr/>
+                        <h2>Winner :</h2>
+                        <p>#{itempage.item.getWinner()}</p>
+                        <hr/>
+                        <ui:fragment rendered="#{itempage.isOwner()}">
+                            <h:form>
+                                <h:commandButton action="#{editItem.load(itempage.item.itemId)}" value="Edit Item Settings" class="pure-button pure-button-primary" />
+                            </h:form>
+                            <hr/>
+                        </ui:fragment>
+                    </div>
+                </div>       
+            </div>
+        </div>
+    </h:body>
+</html>

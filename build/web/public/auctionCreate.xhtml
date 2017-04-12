@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"  />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css"></link>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        
+        <script src="http://maps.googleapis.com/maps/api/js"></script>
+        <script>
+            function initialize() {
+                
+                var myLatLng = new google.maps.LatLng(37.974,23.718);
+                
+                var mapProp = {
+                    center:myLatLng,
+                    zoom:5,
+                    mapTypeId:google.maps.MapTypeId.ROADMAP
+                };
+                var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+                
+                marker = new google.maps.Marker(
+                {
+                     map:map,
+                     draggable:true,
+                     animation: google.maps.Animation.DROP,
+                     position: myLatLng
+                });
+                
+                google.maps.event.addListener(marker, 'click', function (event) {
+                    document.getElementById("latbox").value = event.latLng.lat();
+                    document.getElementById("lngbox").value = event.latLng.lng();
+                });
+                
+                google.maps.event.addListener(marker, 'dragend', function (event) {
+                    document.getElementById("latbox").value = this.getPosition().lat();
+                    document.getElementById("lngbox").value = this.getPosition().lng();
+                });
+                
+            }
+            google.maps.event.addDomListener(window, 'load', initialize);
+            
+        </script>
+        
+        <title>Create Auction</title>
+    </h:head>
+    <h:body>
+        <div class ="pure-g">
+            <div class="pure-u-1-1">
+                <div class ="loginBox pure-u-1-4">
+
+                    <h1> Create Auction :</h1>
+                    <p>fields in (*) are optional</p>
+                    <hr/>
+                    <h:form class="pure-form pure-form-aligned" id="itemcreateform">
+                        <fieldset>
+                            <div class="pure-control-group">
+                                <label for="name">Name</label>
+                                <h:inputText value="#{auction.name}" id="name" />
+                                <h:message class="error" for="name" />
+                            </div>
+
+                            <div class="pure-control-group">
+                                <label for="name">Starting Bidding Price</label>
+                                <h:inputText value="#{auction.firstBid}" id="firstbid"/>
+                                <h:message class="error" for="firstbid" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="name">Buy Price (*)</label>
+                                <h:inputText value="#{auction.buyPrice}" id="buyprice"/>
+                                <h:message class="error" for="buyprice" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="name">Categories (*)</label>
+                                <h:inputText value="#{auction.categories}" id="categories"/>
+                                <h:message class="error" for="categories" />
+                            </div>
+                            
+                            <hr/>
+                            
+                            <div class="pure-control-group">
+                                <label for="name">Location</label>
+                                <h:inputText value="#{auction.location.name}" id="locationname"/>
+                                <h:message class="error" for="locationname" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="name">Country</label>
+                                <h:inputText value="#{auction.location.country}" id="locationcountry"/>
+                                <h:message class="error" for="locationcountry" />
+                            </div>
+                            
+                            <p>Move the Marker to your specific location (*)</p>
+                            <div id="googleMap" style="width:600px;height:400px;"></div>
+                            
+                            <div id="latlong">
+                                <input type="hidden" size="20" id="latbox" name="lat" />
+                                <input type="hidden" size="20" id="lngbox" name="lng" />
+                            </div>
+                            
+                            <hr/>
+                            
+                            <div class="pure-control-group">
+                                <label for="name">Starting Date (*)</label>
+                                <h:inputText value="#{auction.starts}" id="startdate" >
+                                    <f:convertDateTime pattern="d-M-yyyy HH:mm" />
+                                </h:inputText>
+                                <h:message class="error" for="startdate" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="name">Ending Date</label>
+                                <h:inputText value="#{auction.ends}" id="enddate">
+                                    <f:convertDateTime pattern="d-M-yyyy HH:mm" />
+                                </h:inputText>
+                                <h:message class="error" for="enddate" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="name">Description (*)</label>
+                                <h:inputTextarea value="#{auction.description}" id="description"/>
+                                <h:message class="error" for="description" />
+                            </div>
+                            
+                            
+                            <div class="pure-controls">
+                                <h:commandButton action="#{auction.createAuction()}" value="Create Action" class="login pure-button pure-button-primary"/>
+                            </div>
+                            
+                        </fieldset>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+

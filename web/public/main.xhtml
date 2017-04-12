@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"  />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css"></link>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Browse</title>
+    </h:head>
+    
+    <h:body>
+        <div class="pure-g">            
+            
+            <ui:insert name="header">
+            <ui:include src="./templates/header.xhtml"></ui:include>
+            </ui:insert>
+            
+            
+            <div class="container pure-u-3-5">
+                <h1 align="center">Auction House</h1>
+                <h:form class="pure-form">
+                    <fieldset>
+                        
+                        <h:inputText id="searchbar" value="#{browse.search}" class="pure-input-2-3"/>
+                        
+                        <h:commandButton action="#{browse.displayResults()}" value="Search" class="pure-button pure-input-1-3 pure-button-primary"/>
+                        
+                        <ui:fragment rendered="#{browse.isLogged()}" >
+                            <h:commandLink value="See Recommended auctions" action="#{browse.getRecomendations()}" />
+                        </ui:fragment>
+                        
+                    </fieldset>
+                </h:form>                
+                <hr/>                
+                <ui:repeat value="#{browse.results}" var="item">
+                    <h:form class="itembox">
+                        <div class="itembox pure-g">
+                            <div class="image pure-u-1-4"><h:graphicImage library="images" name="default.jpg" /></div>
+
+                            <div class=" details pure-u-1-2">
+                                <h2>#{item.name}</h2>
+                                <h4>by , #{item.seller.username}</h4>
+                                <p>#{browse.getShortDescription(item)}</p>
+                                <h:commandButton action="#{itempage.loadItem(item.itemId)}" value="Bid It" class="pure-button button-error" />
+                            </div>
+
+                            <div class="price pure-u-1-5">
+                                <p>Best bid:</p>
+                                <h:outputText value="#{item.curPrice()}" >
+                                        <f:convertNumber pattern="$0.00" />
+                                </h:outputText>
+                            </div>
+                            <hr/>
+
+                        </div>
+                    </h:form>                   
+                </ui:repeat>
+                
+                <ui:fragment rendered="#{!browse.resultsEmpty()}">
+                    <hr/>
+                    <h:form>
+                        <p>
+                            <h:commandLink value=" Prev Page" action="#{browse.prevResults()}"/>
+                            #{browse.page}
+                            <h:commandLink value="Next Page " action="#{browse.nextResults()}"/>
+                        </p>
+                    </h:form>
+                    <hr/>
+                </ui:fragment>
+            </div>
+        </div>
+    </h:body>
+</html>

@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"  />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css"></link>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Edit User</title>
+    </h:head>
+    <h:body>
+        <div class ="pure-g">
+            
+            <ui:insert name="header">
+            <ui:include src="./templates/header.xhtml"></ui:include>
+            </ui:insert>
+            
+            <div class="pure-u-1-1">
+                <div class ="loginBox pure-u-1-4">
+
+                    <h1> Edit User Settings :</h1>
+                    <p>Only write in the fields you want to change</p>
+                    <hr/>
+                    <h:form class="pure-form pure-form-aligned">
+                        <fieldset>
+                            <div class="pure-control-group">
+                                <label for="firstName">first Name</label>
+                                <h:inputText value="#{editUser.firstName}" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="lastName">Last Name</label>
+                                <h:inputText value="#{editUser.lastName}" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="email">Email</label>
+                                <h:inputText value="#{editUser.email}" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="phone">Phone</label>
+                                <h:inputText value="#{editUser.phone}" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="address">Address</label>
+                                <h:inputText value="#{editUser.address}" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="afm">A.F.M.</label>
+                                <h:inputText value="#{editUser.afm}" />
+                            </div>
+
+                            <div class="pure-controls">
+
+                                <h:commandButton action="#{editUser.change()}" value="Change Settings" class="login pure-button pure-button-primary"/>
+                            </div>
+                            
+                        </fieldset>
+                    </h:form>
+                    <hr/>
+                    <h1> Change Password :</h1>
+                    <hr/>
+                    <h:form class="pure-form pure-form-aligned">
+                        <fieldset>
+                            <div class="pure-control-group">
+                                <label for="password">Old Password</label>
+                                <h:inputSecret value="#{editUser.oldPassword}" />
+                            </div>
+
+                            <div class="pure-control-group">
+                                <label for="password">New Password</label>
+                                <h:inputSecret value="#{editUser.password}" />
+                            </div>
+                            
+                            <div class="pure-control-group">
+                                <label for="repPassWord">Repeat Password</label>
+                                <h:inputSecret value="#{editUser.repPassword}" />
+                            </div>
+                            
+                            <div class="pure-controls">
+
+                                <h:commandButton action="#{editUser.changePassword()}" value="Change Password" class="login pure-button pure-button-primary"/>
+                            </div>
+                        </fieldset>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+
